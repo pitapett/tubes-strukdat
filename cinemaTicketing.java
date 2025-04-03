@@ -1,5 +1,5 @@
 class User {
-
+    int a;
 }
 
 class Admin {
