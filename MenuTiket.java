@@ -54,7 +54,7 @@ class Movie {
 }
 
 class Seat {
-
+    
     String seatID;
     boolean isAvailable;
 }
@@ -68,13 +68,13 @@ class Seat {
 //     int totalPembeli;
 // }
 // class Minuman {
-//     String nama;
-//     int harga;
+    //     String nama;
+    //     int harga;
 //     int totalPembeli;
 // }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-class TiketAktifNode {
 
+class TiketAktifNode {
+    
     Ticket ticket; // ticket == node yg isinya kodeBooking dll.
     TiketAktifNode next;
 
@@ -91,7 +91,7 @@ class TiketAktifLinkedList {
 
     public void addTicket(Ticket ticket) {
 
-        TiketAktifNode newNode = new TiketAktifNode(ticket); // bikin node baru -> isinya ticket (wadah yg isinya kodeBooking dll.)
+        TiketAktifNode newNode = new TiketAktifNode(ticket); // bikin node baru isinya ticket (wadah yg isinya kodeBooking dll.)
 
         if (head == null) { // LL kosong
             head = newNode;
@@ -174,7 +174,7 @@ class TiketAktifLinkedList {
 
     }
 
-    public boolean moveTicket(TiketHistoryLinkedList historyList, int kodeBooking) { // kan mau move dari aktif -> history, makanya history hrs ada di parameter
+    public boolean moveTicket(TiketHistoryLinkedList historyList, int kodeBooking) { // kan mau move dari aktif ke history, makanya history hrs ada di parameter
 
         if (head == null) { // 1st condi : LL kosong
             System.out.println("TIDAK ADA TIKET YANG DIPINDAH");
@@ -239,7 +239,7 @@ class TiketHistoryLinkedList {
 
     public void addTicket(Ticket ticket) {
 
-        TiketHistoryNode newNode = new TiketHistoryNode(ticket); // bikin node baru -> isinya ticket
+        TiketHistoryNode newNode = new TiketHistoryNode(ticket); // bikin node baru isinya ticket
 
         if (head == null) { // LL kosong
             head = newNode;
@@ -262,7 +262,6 @@ class TiketHistoryLinkedList {
 
         if (current == null) {
             System.out.println("TIDAK ADA HISTORY TIKET");
-            return;
 
         } else {
             while (current != null) {
@@ -291,10 +290,12 @@ public class MenuTiket {
 
     public static void main(String[] args) {
 
-        // bikin objek menu -> jd nnt bs akses aktifList, historyList, showMenu
+        // bikin objek menu jd nnt bs akses aktifList, historyList, showMenu
+        // knp bikin objek? krn drtd methodnya bukan static
+        // knp gapake static? biar tiap user bs punya data yg beda2
         MenuTiket menu = new MenuTiket();
     
-        // contoh -> pake data dummy
+        // contoh pake data dummy
         // urutan : kodeBooking, passKey, seatID, studioID, cinema, city, ticketID
         Ticket ticket1 = new Ticket(1111, 1111, "A1", "S1", "CGV", "Bandung", "T1");
         Ticket ticket2 = new Ticket(2222, 2222, "B2", "S2", "XXI", "Jakarta", "T2");
@@ -326,7 +327,7 @@ public class MenuTiket {
                 case 1:
                     aktifList.showTicket();
 
-                    if (aktifList.head != null) { // kl ada tiket aktif, nanya user mau dekete / move ga
+                    if (aktifList.head != null) { // kl ada tiket aktif, nanya user mau move / deelte ga
 
                         System.out.println("Move / delete : ");
                         System.out.println("1. Move tiket");
@@ -363,41 +364,6 @@ public class MenuTiket {
                             default:
                                 System.out.println("Error");
                         }
-                        // System.out.print("Move? (y/n) ");
-                        // String move = sc.next().trim();
-                        // sc.nextLine();
-
-                        // if (move.equalsIgnoreCase("y")) {
-                        //     System.out.print("Kode booking yang mau dipindah : ");
-                        //     int kodeBookingMove = sc.nextInt();
-                        //     sc.nextLine();
-
-                        //     boolean isMoved = aktifList.moveTicket(historyList, kodeBookingMove);
-
-                        //     if (isMoved) {
-                        //         System.out.println("TIKET BERHASIL DIPINDAH");
-                        //     } else {
-                        //         System.out.println("DATA TIDAK ADA");
-                        //     }
-                        // }  
-                        
-                        // System.out.print("Delete? (y/n) ");
-                        // String delete = sc.next().trim();
-
-                        // if (delete.equalsIgnoreCase("y")) {
-                        //     System.out.print("Kode booking yang mau dihaous : ");
-                        //     int kodeBookingDelete = sc.nextInt();
-                        //     sc.nextLine();
-
-                        //     boolean isDeleted = aktifList.deleteTicket(kodeBookingDelete);
-
-                        //     if (isDeleted) {
-                        //         System.out.println("TIKET BERHASIL DIHAPUS");
-                        //     } else {
-                        //         System.out.println("DATA TIDAK ADA");
-                        //     }
-                        // }
-
                     }
                     break;
                 case 2:
