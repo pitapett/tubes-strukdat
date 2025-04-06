@@ -328,7 +328,7 @@ public class MenuTiket {
 
                     if (aktifList.head != null) { // kl ada tiket aktif, nanya user mau dekete / move ga
 
-                        System.out.println("Pilih : ");
+                        System.out.println("Move / delete : ");
                         System.out.println("1. Move tiket");
                         System.out.println("2. Delete tiket");
                         System.out.println("3. Keluar program");
@@ -355,7 +355,7 @@ public class MenuTiket {
                                 sc.nextLine();
 
                                 if (aktifList.deleteTicket(kodeBookingDelete)) {
-                                    System.out.println("TIKET BERHASIL DIPINDAH");
+                                    System.out.println("TIKET BERHASIL DIHAPUS");
                                 } else {
                                     System.out.println("DATA TIDAK ADA");
                                 }
