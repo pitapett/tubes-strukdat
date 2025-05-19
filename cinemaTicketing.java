@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -5,6 +6,10 @@ import java.util.ArrayList;
 class User {
     TicketAktifLL ticketsAktif; 
     TicketHistoryLL ticketsHistory; 
+=======
+class User {
+    int a;
+>>>>>>> f0129cc2620bfee1a096d8727ab6e7113a833ff8
 }
 
 class Admin {
