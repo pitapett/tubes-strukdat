@@ -200,11 +200,13 @@ public class Main {
     // Kelola Film (Tambah, Edit, Hapus)
     public static void manageMoviesMenu() {
         while (true) {
-            System.out.println("\n=== Kelola Film ===");
+            System.out.println("\n=== Film ===");
             for (int i = 0; i < movies.size(); i++) {
                 Movie m = movies.get(i);
                 System.out.println((i + 1) + ". " + m.title + " (" + m.genre + ", " + m.duration + " menit)");
             }
+            System.out.println();
+            System.out.println("=== Kelola Film ===");
             System.out.println("a. Tambah Film");
             System.out.println("b. Edit Film");
             System.out.println("c. Hapus Film");
@@ -263,11 +265,13 @@ public class Main {
     // Kelola Jadwal Tayang (Tambah, Edit, Hapus)
     public static void manageSchedulesMenu() {
         while (true) {
-            System.out.println("\n=== Kelola Jadwal Tayang ===");
+            System.out.println("\n=== Jadwal Tayang ===");
             for (int i = 0; i < sessions.size(); i++) {
                 MovieSession s = sessions.get(i);
                 System.out.println((i + 1) + ". " + s.movie.title + " di " + s.studio.name + " pada " + s.dateTime);
             }
+            System.out.println();
+            System.out.println("=== Kelola Jadwal Tayang ===");
             System.out.println("a. Tambah Jadwal");
             System.out.println("b. Edit Jadwal");
             System.out.println("c. Hapus Jadwal");
@@ -374,11 +378,13 @@ public class Main {
     // Kelola Menu Cafe (Tambah, Edit, Hapus)
     public static void manageCafeMenu() {
         while (true) {
-            System.out.println("\n=== Kelola Menu Cafe ===");
+            System.out.println("\n=== Menu Cafe ===");
             for (int i = 0; i < menus.size(); i++) {
                 CafeMenu m = menus.get(i);
                 System.out.println((i + 1) + ". " + m.name + " - Rp" + m.price);
             }
+            System.out.println();
+            System.out.println("=== Kelola Menu Cafe ===");
             System.out.println("a. Tambah Menu");
             System.out.println("b. Edit Menu");
             System.out.println("c. Hapus Menu");
@@ -462,25 +468,14 @@ public class Main {
         admins.add(new Admin("admin2"));
         admins.add(new Admin("admin3"));
 
-        // Buat sessions dengan tanggal berbeda selama seminggu (7 hari terakhir)
-        sessions.clear();
-        sessions.add(new MovieSession(movies.get(0), studios.get(0), LocalDateTime.now().minusDays(6).withHour(13).withMinute(0)));
-        sessions.add(new MovieSession(movies.get(1), studios.get(1), LocalDateTime.now().minusDays(5).withHour(14).withMinute(0)));
-        sessions.add(new MovieSession(movies.get(2), studios.get(2), LocalDateTime.now().minusDays(4).withHour(15).withMinute(0)));
-        sessions.add(new MovieSession(movies.get(1), studios.get(0), LocalDateTime.now().minusDays(3).withHour(16).withMinute(0)));
-        sessions.add(new MovieSession(movies.get(2), studios.get(1), LocalDateTime.now().minusDays(2).withHour(17).withMinute(0)));
-        sessions.add(new MovieSession(movies.get(0), studios.get(2), LocalDateTime.now().minusDays(1).withHour(18).withMinute(0)));
-        sessions.add(new MovieSession(movies.get(2), studios.get(1), LocalDateTime.now().withHour(19).withMinute(0)));
-
-        // Buat tiket dengan session yang sudah ada
-        tickets.clear();
-        tickets.add(new Ticket(users.get(0), sessions.get(0), "A1", 50000));
-        tickets.add(new Ticket(users.get(1), sessions.get(1), "B2", 45000));
-        tickets.add(new Ticket(users.get(2), sessions.get(2), "C3", 48000));
-        tickets.add(new Ticket(users.get(0), sessions.get(3), "D4", 52000));
-        tickets.add(new Ticket(users.get(1), sessions.get(4), "E5", 47000));
-        tickets.add(new Ticket(users.get(2), sessions.get(5), "F6", 49000));
-        tickets.add(new Ticket(users.get(0), sessions.get(6), "G7", 51000));
+        // tiket yg dibooking di hari yg berbeda selama seminggu
+        tickets.add(new Ticket(users.get(0), new MovieSession(movies.get(0), studios.get(0), LocalDateTime.now().minusDays(6).withHour(13).withMinute(0)), "A1", 50000));
+        tickets.add(new Ticket(users.get(1), new MovieSession(movies.get(1), studios.get(1), LocalDateTime.now().minusDays(5).withHour(14).withMinute(0)), "B2", 45000));
+        tickets.add(new Ticket(users.get(2), new MovieSession(movies.get(2), studios.get(2), LocalDateTime.now().minusDays(4).withHour(15).withMinute(0)), "C3", 48000));
+        tickets.add(new Ticket(users.get(0), new MovieSession(movies.get(1), studios.get(0), LocalDateTime.now().minusDays(3).withHour(16).withMinute(0)), "D4", 52000));
+        tickets.add(new Ticket(users.get(1), new MovieSession(movies.get(2), studios.get(1), LocalDateTime.now().minusDays(2).withHour(17).withMinute(0)), "E5", 47000));
+        tickets.add(new Ticket(users.get(2), new MovieSession(movies.get(0), studios.get(2), LocalDateTime.now().minusDays(1).withHour(18).withMinute(0)), "F6", 49000));
+        tickets.add(new Ticket(users.get(0), new MovieSession(movies.get(2), studios.get(1), LocalDateTime.now().withHour(19).withMinute(0)), "G7", 51000));
 
         //menu
         menus.add(new CafeMenu("Popcorn", 20000));
