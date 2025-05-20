@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class User {
+// class User {
 
     TicketAktifLL ticketsAktif;
     TicketHistoryLL ticketsHistory;
@@ -168,29 +168,29 @@ class TicketAktifLL {
     TicketAktifNode head = null;
     TicketAktifNode tail = null;
 
-    public void addTicket(Ticket ticket) {
+//     public void addTicket(Ticket ticket) {
 
         TicketAktifNode newNode = new TicketAktifNode(ticket); // bikin node baru isinya ticket (wadah yg isinya kodeBooking dll.)
 
-        if (head == null) { // LL kosong
-            head = newNode;
-            tail = head;
+//         if (head == null) { // LL kosong
+//             head = newNode;
+//             tail = head;
 
-        } else { // LL udah ada isinya
-            tail.next = newNode;
-            tail = newNode;
-            tail.next = null;
-        }
-    }
+//         } else { // LL udah ada isinya
+//             tail.next = newNode;
+//             tail = newNode;
+//             tail.next = null;
+//         }
+//     }
 
-    public void showTicket() {
+//     public void showTicket() {
 
         TicketAktifNode current = head; // krn mau show, jadi hrs mulai dari head
         int noTiket = 1; // entar biar hasil run nya ada urutan nomer
 
-        if (current == null) {
-            System.out.println("TIDAK ADA TIKET AKTIF");
-            return;
+//         if (current == null) {
+//             System.out.println("TIDAK ADA TIKET AKTIF");
+//             return;
 
         } else {
             while (current != null) {
@@ -214,21 +214,21 @@ class TicketAktifLL {
         }
     }
 
-    public boolean deleteTicket(int kodeBooking) {
+//     public boolean deleteTicket(int kodeBooking) {
 
-        if (head == null) { // 1st condi : LL kosong
-            System.out.println("TIDAK ADA TIKET YANG DIHAPUS");
-            return false;
+//         if (head == null) { // 1st condi : LL kosong
+//             System.out.println("TIDAK ADA TIKET YANG DIHAPUS");
+//             return false;
 
-        } else if (head == tail) { // 2nd condi : node sisa 1
-            if (head.ticket.kodeBooking == kodeBooking) {
-                head = null;
-                tail = null;
-                return true;
-            } else {
-                System.out.println("DATA TIDAK ADA");
-                return false;
-            }
+//         } else if (head == tail) { // 2nd condi : node sisa 1
+//             if (head.ticket.kodeBooking == kodeBooking) {
+//                 head = null;
+//                 tail = null;
+//                 return true;
+//             } else {
+//                 System.out.println("DATA TIDAK ADA");
+//                 return false;
+//             }
 
         } else { // 3rd condi : node masih banyak
             if (head.ticket.kodeBooking == kodeBooking) { // delete head
@@ -237,31 +237,31 @@ class TicketAktifLL {
             } else {
                 TicketAktifNode current = head;
 
-                while (current.next != null && current.next.ticket.kodeBooking != kodeBooking) {
-                    current = current.next; // lanjut selagi blm nemu yg cocok
-                }
+//                 while (current.next != null && current.next.ticket.kodeBooking != kodeBooking) {
+//                     current = current.next; // lanjut selagi blm nemu yg cocok
+//                 }
 
-                if (current.next == null) { // posisi udah jalan sampe tail tp ga nemu yg cocok
-                    System.out.println("DATA TIDAK ADA");
-                    return false;
-                } else if (current.next == tail) { // posisi sblm tail & mau delete tail
-                    tail = current;
-                    tail.next = null;
-                    return true;
-                } else { // delete node di tengah
-                    current.next = current.next.next;
-                    return true;
-                }
-            }
-        }
+//                 if (current.next == null) { // posisi udah jalan sampe tail tp ga nemu yg cocok
+//                     System.out.println("DATA TIDAK ADA");
+//                     return false;
+//                 } else if (current.next == tail) { // posisi sblm tail & mau delete tail
+//                     tail = current;
+//                     tail.next = null;
+//                     return true;
+//                 } else { // delete node di tengah
+//                     current.next = current.next.next;
+//                     return true;
+//                 }
+//             }
+//         }
 
-    }
+//     }
 
     public boolean moveTicket(TicketHistoryLL ticketsHistory, int kodeBooking) { // kan mau move dari aktif ke history, makanya history hrs ada di parameter
 
-        if (head == null) { // 1st condi : LL kosong
-            System.out.println("TIDAK ADA TIKET YANG DIPINDAH");
-            return false;
+//         if (head == null) { // 1st condi : LL kosong
+//             System.out.println("TIDAK ADA TIKET YANG DIPINDAH");
+//             return false;
 
         } else if (head == tail) { // 2nd condi : node sisa 1
             if (head.ticket.kodeBooking == kodeBooking) {
@@ -282,9 +282,9 @@ class TicketAktifLL {
             } else {
                 TicketAktifNode current = head;
 
-                while (current.next != null && current.next.ticket.kodeBooking != kodeBooking) {
-                    current = current.next; // lanjut selagi blm nemu yg cocok 
-                }
+//                 while (current.next != null && current.next.ticket.kodeBooking != kodeBooking) {
+//                     current = current.next; // lanjut selagi blm nemu yg cocok 
+//                 }
 
                 if (current.next == null) { // posisi udah jalan sampe tail tp ga nemu yg cocok
                     System.out.println("DATA TIDAK ADA");
@@ -320,31 +320,31 @@ class TicketHistoryLL {
     TicketHistoryNode head = null;
     // TicketAktifNode tail = null;
 
-    public void addTicket(Ticket ticket) {
+//     public void addTicket(Ticket ticket) {
 
         TicketHistoryNode newNode = new TicketHistoryNode(ticket); // bikin node baru isinya ticket
 
-        if (head == null) { // LL kosong
-            head = newNode;
+//         if (head == null) { // LL kosong
+//             head = newNode;
 
         } else { // LL ada isi
             TicketHistoryNode current = head;
 
-            while (current.next != null) { // masih ada node
-                current = current.next;
-            }
+//             while (current.next != null) { // masih ada node
+//                 current = current.next;
+//             }
 
-            current.next = newNode;
-        }
-    }
+//             current.next = newNode;
+//         }
+//     }
 
-    public void showTicket() {
+//     public void showTicket() {
 
         TicketHistoryNode current = head; // mau show mulai dari head
         int noTiket = 1;
 
-        if (current == null) {
-            System.out.println("TIDAK ADA HISTORY TIKET");
+//         if (current == null) {
+//             System.out.println("TIDAK ADA HISTORY TIKET");
 
         } else {
             while (current != null) {
@@ -363,19 +363,19 @@ class TicketHistoryLL {
 
                 noTiket++;
 
-                current = current.next;
-            }
-        }
-    }
-}
+//                 current = current.next;
+//             }
+//         }
+//     }
+// }
 
-public class MenuTiket {
+// public class MenuTiket {
 
     // bikin LL nya dulu
     TicketAktifLL ticketsAktif = new TicketAktifLL();
     TicketHistoryLL ticketsHistory = new TicketHistoryLL();
 
-    public static void main(String[] args) {
+//     public static void main(String[] args) {
 
         // bikin objek menu jd nnt bs akses ticketsAktif, ticketsHistory, showMenu
         // knp bikin objek? krn drtd methodnya bukan static
@@ -417,19 +417,19 @@ public class MenuTiket {
         menu.showMenu();
     }
 
-    public void showMenu() {
-        Scanner sc = new Scanner(System.in);
-        int pilihMenu = 0;
+//     public void showMenu() {
+//         Scanner sc = new Scanner(System.in);
+//         int pilihMenu = 0;
 
-        while (pilihMenu != 3) {
-            System.out.println("Menu Tiket : ");
-            System.out.println("1. Tiket Aktif");
-            System.out.println("2. Daftar Transaksi");
-            System.out.println("3. Keluar program");
+//         while (pilihMenu != 3) {
+//             System.out.println("Menu Tiket : ");
+//             System.out.println("1. Tiket Aktif");
+//             System.out.println("2. Daftar Transaksi");
+//             System.out.println("3. Keluar program");
 
-            System.out.print("Pilih menu : ");
-            pilihMenu = sc.nextInt();
-            sc.nextLine();
+//             System.out.print("Pilih menu : ");
+//             pilihMenu = sc.nextInt();
+//             sc.nextLine();
 
             switch (pilihMenu) {
                 case 1:
@@ -437,14 +437,14 @@ public class MenuTiket {
 
                     if (ticketsAktif.head != null) { // kl ada tiket aktif, nanya user mau move / deelte ga
 
-                        System.out.println("Move / delete : ");
-                        System.out.println("1. Move tiket");
-                        System.out.println("2. Delete tiket");
-                        System.out.println("3. Keluar program");
+//                         System.out.println("Move / delete : ");
+//                         System.out.println("1. Move tiket");
+//                         System.out.println("2. Delete tiket");
+//                         System.out.println("3. Keluar program");
 
-                        System.out.print("Pilih : ");
-                        int pilih = sc.nextInt();
-                        sc.nextLine();
+//                         System.out.print("Pilih : ");
+//                         int pilih = sc.nextInt();
+//                         sc.nextLine();
 
                         switch (pilih) {
                             case 1:
