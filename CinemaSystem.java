@@ -12,6 +12,11 @@ import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 
 class CinemaSystem {
+
+    public CinemaSystem() {
+        initializeDummyData();
+    }
+
     public static void main(String[] args) {
         CinemaSystem system = new CinemaSystem();
         system.start();
@@ -20,10 +25,13 @@ class CinemaSystem {
     Scanner scn = new Scanner(System.in);
 
     User user = new User();
+
     Admin admin = new Admin();
 
     ArrayList<City> cities = new ArrayList<>();
+
     ArrayList<DailySalesReport> salesReports = new ArrayList<>();
+
     MovieList movieList = new MovieList();
 
     public void printCities() {
@@ -52,19 +60,32 @@ class CinemaSystem {
     }
 
     public FoodOrder createFoodOrder(Ticket ticket, ArrayList<String> foodNames, ArrayList<String> drinkNames) {
+
         Cinema cinema = getCinemaFromTicket(ticket);
+
         if (cinema == null || cinema.cafeMenu == null) {
             System.out.println("Cafe not available for this ticket");
             return null;
         }
 
         FoodOrder order = new FoodOrder();
+
         order.associatedTicket = ticket;
+
         order.totalPrice = 0;
 
-        // Process food items
+        if (order.orderedFood == null) {
+            order.orderedFood = new ArrayList<>();
+        }
+
+        if (order.orderedDrinks == null) {
+            order.orderedDrinks = new ArrayList<>();
+        }
+
         for (String foodName : foodNames) {
+
             for (Makanan m : cinema.cafeMenu.makananList) {
+
                 if (m.nama.equalsIgnoreCase(foodName)) {
                     order.orderedFood.add(m);
                     order.totalPrice += m.harga;
@@ -73,18 +94,26 @@ class CinemaSystem {
             }
         }
 
-        // Process drink items
         for (String drinkName : drinkNames) {
+
             for (Minuman d : cinema.cafeMenu.minumanList) {
+
                 if (d.nama.equalsIgnoreCase(drinkName)) {
+
                     order.orderedDrinks.add(d);
+
                     order.totalPrice += d.harga;
+
                     break;
+
                 }
+
             }
+
         }
 
         return order;
+
     }
 
     public Cinema getCinemaFromTicket(Ticket ticket) {
@@ -98,10 +127,6 @@ class CinemaSystem {
             }
         }
         return null;
-    }
-
-    public CinemaSystem() {
-        initializeDummyData();
     }
 
     public void initializeDummyData() {
@@ -137,10 +162,24 @@ class CinemaSystem {
             for (String cinemaName : cinemaNames[i]) {
                 Cinema cinema = new Cinema(cinemaName);
                 city.cinemas.add(cinema);
+                int rows = 0;
+                int cols = 0;
 
                 for (int s = 1; s <= 2; s++) {
-                    int rows = 5 + random.nextInt(5); // 5-9 rows
-                    int cols = 8 + random.nextInt(4); // 8-11 columns
+                    switch (s) {
+                        case 1:
+                            rows = 9;
+                            cols = 9;
+                            break;
+                    
+                        case 2:
+                            rows = 5;
+                            cols = 5;
+                            break;
+                    
+                        default:
+                            break;
+                    }
                     Studio studio = new Studio("A" + s, rows, cols);
                     cinema.studios.add(studio);
 
@@ -148,25 +187,26 @@ class CinemaSystem {
                 }
             }
         }
-
-        // Add cafe menus to cinemas
+        // Add cafe menu ke cinema
         for (City city : cities) {
             for (Cinema cinema : city.cinemas) {
                 cinema.cafeMenu = new CafeMenu();
                 cinema.cafeMenu.makananList = new ArrayList<>();
                 cinema.cafeMenu.minumanList = new ArrayList<>();
 
-                // Add sample food
+                // data dummy
                 cinema.cafeMenu.makananList.add(new Makanan("Popcorn Regular", 30000));
                 cinema.cafeMenu.makananList.add(new Makanan("Popcorn Large", 45000));
                 cinema.cafeMenu.makananList.add(new Makanan("Nachos", 35000));
 
-                // Add sample drinks
+                // data dummy
                 cinema.cafeMenu.minumanList.add(new Minuman("Soft Drink Regular", 20000));
                 cinema.cafeMenu.minumanList.add(new Minuman("Soft Drink Large", 25000));
                 cinema.cafeMenu.minumanList.add(new Minuman("Mineral Water", 15000));
             }
         }
+
+        createDummyTickets();
     }
 
     public void createRandomSessions(Studio studio, Movie[] movies) {
@@ -181,17 +221,59 @@ class CinemaSystem {
             int dayOffset = random.nextInt(8); // range dari hari ini ke h+7
             LocalDate sessionDate = LocalDate.now().plusDays(dayOffset);
 
-            // Random time between 10:00-21:00 in 30-min increments
+            // Generate waktu random diantara 10:00 - 21:00
             int hour = 10 + random.nextInt(12); // 10-21
             int minute = random.nextBoolean() ? 0 : 30;
             LocalDateTime startTime = LocalDateTime.of(
                     sessionDate,
                     LocalTime.of(hour, minute));
 
-            // Create and add session
             MovieSession session = new MovieSession(movie, startTime, studio);
             studio.schedule.add(session);
+
         }
+
+    }
+
+    public void createDummyTickets() {
+        Random rand = new Random();
+
+        for (City city : cities) {
+            for (Cinema cinema : city.cinemas) {
+                for (Studio studio : cinema.studios) {
+                    for (MovieSession session : studio.schedule) {
+                        int ticketsToCreate = 1 + rand.nextInt(5);
+
+                        for (int i = 0; i < ticketsToCreate; i++) {
+
+                            Seat[][] seats = session.sessionSeats;
+                            int row = rand.nextInt(seats.length);
+                            int col = rand.nextInt(seats[0].length);
+
+                            while (!seats[row][col].isAvailable) {
+                                row = rand.nextInt(seats.length);
+                                col = rand.nextInt(seats[0].length);
+                            }
+
+                            seats[row][col].isAvailable = false;
+
+                            String seatId = seats[row][col].seatID;
+                            Ticket ticket = new Ticket(session, seatId, cinema.cinemaName, city.cityName);
+
+                            if (rand.nextBoolean()) {
+                                user.ticketsAktif.addTicket(ticket);
+                            } else {
+                                user.ticketsHistory.addTicket(ticket);
+                            }
+
+                            session.movie.totalPenonton++;
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println("Dummy tickets created successfully!");
     }
 
     public void start() {
@@ -221,6 +303,8 @@ class CinemaSystem {
 
     public void userMenuLoop() {
         User currentUser = new User();
+
+
         while (true) {
             System.out.println("\n=== USER MENU ===");
             System.out.println("1. Book a Movie");
@@ -232,7 +316,7 @@ class CinemaSystem {
 
             switch (choice) {
                 case 1:
-                    currentUser.bookMovieFlow(this); // Pass CinemaSystem reference
+                    currentUser.bookMovieFlow(this); 
                     break;
                 case 2:
                     currentUser.viewTickets();
@@ -246,6 +330,7 @@ class CinemaSystem {
                     System.out.println("Invalid choice");
             }
         }
+
     }
 
     public void adminMenuLoop() {
@@ -294,6 +379,7 @@ class CinemaSystem {
 class User {
     TicketAktifLL ticketsAktif = new TicketAktifLL();
     TicketHistoryLL ticketsHistory = new TicketHistoryLL();
+    FoodOrderHistory foodOrderHistory = new FoodOrderHistory();
     Scanner scn = new Scanner(System.in);
 
     public User() {
@@ -432,7 +518,7 @@ class User {
             return;
         }
 
-        // Display sessions for selected movie
+        // Display sessions untuk movieChoice
         CinemaMoviePair selectedPair = cinemaMovies.get(movieChoice);
         MovieSession session = selectSessionByMovie(selectedPair.movie, selectedPair.cinema, system);
 
@@ -461,6 +547,8 @@ class User {
         }
         return false;
     }
+
+    // method select session untuk flow dari book
 
     public MovieSession selectSessionByMovie(Movie movie, Cinema cinema, CinemaSystem system) {
 
@@ -648,7 +736,6 @@ class User {
                     System.out.println("\n--- Tiket Aktif ---");
                     ticketsAktif.showTicket();
 
-                    // Check if there are tickets to manage before offering options
                     if (!ticketsAktif.tickets.isEmpty()) {
                         System.out.println("\n--- Opsi Tiket Aktif ---");
                         System.out.println("1. Pindahkan tiket ke History");
@@ -656,8 +743,8 @@ class User {
                         System.out.println("3. Kembali ke Menu Utama");
 
                         System.out.print("Pilih : ");
-                        int pilih = sc.nextInt(); // No try-catch, expect valid integer input
-                        sc.nextLine(); // Consume newline
+                        int pilih = sc.nextInt();
+                        sc.nextLine();
 
                         switch (pilih) {
                             case 1:
@@ -695,7 +782,7 @@ class User {
                     ticketsHistory.showTicket();
                     break;
                 case 3:
-                    System.out.println("KELUAR DARI PROGRAM. SAMPAI JUMPA!");
+                    System.out.println("KELUAR DARI PROGRAM");
                     break;
                 default:
                     System.out.println("Pilihan tidak valid. Silakan coba lagi.");
@@ -716,7 +803,8 @@ class User {
                 orderByActiveTicket(system);
                 break;
             case 2:
-                // viewOrderHistory();
+                viewOrderHistory();
+                System.out.println("maaf fitur belum tersedia");
                 break;
             case 0:
                 return;
@@ -791,6 +879,7 @@ class User {
                     FoodOrder order = system.createFoodOrder(selectedTicket, foodItems, drinkItems);
                     if (order != null) {
                         System.out.println("Order confirmed! Total: Rp" + order.totalPrice);
+                        foodOrderHistory.addOrder(order);
                     }
                     ordering = false;
                     break;
@@ -801,6 +890,14 @@ class User {
                     System.out.println("Invalid option");
             }
         }
+    }
+
+    private void viewOrderHistory() {
+        foodOrderHistory.showOrderHistory();
+
+        // Add option to return
+        System.out.println("\nEnter any key to return...");
+        scn.nextLine();
     }
 
     private void removeItemFromOrder(ArrayList<String> foodItems, ArrayList<String> drinkItems) {
@@ -1809,10 +1906,11 @@ class TicketAktifLL {
         }
 
         int noTiket = 1;
-        for (Ticket currentTicket : tickets) { // Iterate using enhanced for-loop
+        for (Ticket currentTicket : tickets) {
             System.out.println("TIKET KE-" + noTiket);
             System.out.println("Kode booking : " + currentTicket.kodeBooking);
             System.out.println("Pass key     : " + currentTicket.passKey);
+            System.out.println("Movie        : " + currentTicket.session.movie.judul);
             System.out.println("Seat ID      : " + currentTicket.seatID);
             System.out.println("Studio ID    : " + currentTicket.session.sessionStudio.studioID);
             System.out.println("Bioskop      : " + currentTicket.cinemaName);
@@ -1921,6 +2019,54 @@ class Minuman {
     public Minuman(String nama, int harga) {
         this.nama = nama;
         this.harga = harga;
+    }
+}
+
+class FoodOrderHistory {
+    private ArrayList<FoodOrder> orders;
+
+    public FoodOrderHistory() {
+        this.orders = new ArrayList<>();
+    }
+
+    public void addOrder(FoodOrder order) {
+        orders.add(order);
+    }
+
+    public void showOrderHistory() {
+        if (orders.isEmpty()) {
+            System.out.println("No order history available.");
+            return;
+        }
+
+        System.out.println("\n=== FOOD ORDER HISTORY ===");
+        for (int i = 0; i < orders.size(); i++) {
+            FoodOrder order = orders.get(i);
+            System.out.println("\nOrder #" + (i + 1));
+            System.out.println("Ticket ID: " + order.associatedTicket.ticketID);
+            System.out.println("Cinema: " + order.associatedTicket.cinemaName);
+
+            System.out.println("\nFood Items:");
+            if (order.orderedFood.isEmpty()) {
+                System.out.println("None");
+            } else {
+                for (Makanan food : order.orderedFood) {
+                    System.out.println("- " + food.nama + " (Rp" + food.harga + ")");
+                }
+            }
+
+            System.out.println("\nDrink Items:");
+            if (order.orderedDrinks.isEmpty()) {
+                System.out.println("None");
+            } else {
+                for (Minuman drink : order.orderedDrinks) {
+                    System.out.println("- " + drink.nama + " (Rp" + drink.harga + ")");
+                }
+            }
+
+            System.out.println("\nTotal Price: Rp" + order.totalPrice);
+            System.out.println("----------------------------");
+        }
     }
 }
 

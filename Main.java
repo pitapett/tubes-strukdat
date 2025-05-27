@@ -458,7 +458,7 @@
 //         sessions.add(new MovieSession(movies.get(1), studios.get(1), LocalDateTime.now().plusHours(2)));
 //         sessions.add(new MovieSession(movies.get(2), studios.get(2), LocalDateTime.now().plusHours(4)));
 
-//         //user
+//         //userpt
 //         users.add(new User("budi"));
 //         users.add(new User("sari"));
 //         users.add(new User("andi"));
